@@ -3,9 +3,9 @@ const fs = require("fs");
 const Joi = require("joi");
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications["api-key"];
-apiKey.apiKey = "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";
+apiKey.apiKey = process.env.EMAIL_API_KEY;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-const senderMail = "devansh.gaur.iitbhu20@gmail.com";
+const senderMail = process.env.EMAIL_SENDER;
 
 const Mail = {
   async sendMailVerify(req, res, next) {
@@ -52,7 +52,7 @@ const Mail = {
           res.status(200).json({ message: "Mail sent successfully" });
         });
     } catch (error) {
-      console.log(error.message);
+      console.log("Error occured");
       res.status(500).json({ error: error.message });
     }
   },
