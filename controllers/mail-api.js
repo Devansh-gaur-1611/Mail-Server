@@ -3,9 +3,9 @@ const fs = require("fs");
 const Joi = require("joi");
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications["api-key"];
-apiKey.apiKey = process.env.EMAIL_API_KEY;
+apiKey.apiKey = "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";
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-const senderMail = process.env.EMAIL_SENDER;
+const senderMail = "devansh.gaur.iitbhu20@gmail.com";
 
 const Mail = {
   async sendMailVerify(req, res, next) {
