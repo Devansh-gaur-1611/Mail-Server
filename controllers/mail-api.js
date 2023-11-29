@@ -148,6 +148,51 @@ const Mail = {
       console.log(error.message);
       res.status(500).json({ error: error.message });
     }
+  },
+  async sendMailAttendance(req, res, next) {
+    const mailSchema = Joi.object({
+      email: Joi.string().required(),
+      subject: Joi.string().required(),
+      username: Joi.string().required(),
+      course: Joi.string().required(),
+      adminName: Joi.string().required(),
+    });
+  
+    const { error } = mailSchema.validate(req.body);
+    if (error) {
+      return next(error);
+    }
+    const sender = {
+      email: senderMail,
+      name: req.body.adminName,
+    };
+  
+    const receivers = [
+      {
+        email: req.body.email,
+      },
+    ];
+  
+    let html = fs.readFileSync("./templates/short-attendance.html", "utf8");
+    html = html.replace("{{username}}", req.body.username);
+    html = html.replace("{{adminName}}", req.body.adminName);
+    html = html.replace("{{subject}}", req.body.course);
+  
+    try {
+      apiInstance
+        .sendTransacEmail({
+          sender,
+          to: receivers,
+          subject: req.body.subject,
+          htmlContent: html,
+        })
+        .then((response) => {
+          res.status(200).json({ message: "Mail sent successfully" });
+        });
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ error: error.message });
+    }
   }
 };
 
